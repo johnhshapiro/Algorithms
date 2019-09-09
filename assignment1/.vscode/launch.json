@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - BetterQuicksort",
+            "request": "launch",
+            "mainClass": "BetterQuicksort",
+            "projectName": "assignment1"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - betterQuicksort",
+            "request": "launch",
+            "mainClass": "betterQuicksort",
+            "projectName": "assignment1"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Quicksort",
+            "request": "launch",
+            "mainClass": "Quicksort",
+            "projectName": "assignment1"
+        }
+    ]
+}
