@@ -11,7 +11,7 @@ public class BetterQuicksort {
     public static void main(String[] args) throws Exception {
         BetterQuicksort sorter = new BetterQuicksort();
 
-        sorter.multipleSorts("lomuto");
+        sorter.multipleSorts("");
         
     }
 
@@ -35,7 +35,7 @@ public class BetterQuicksort {
         timeInMillis = System.currentTimeMillis();
         quicksort(array, option);
         elapsedTime = System.currentTimeMillis() - timeInMillis;
-        System.out.println(sorted = isSorted(array));        
+        sorted = isSorted(array);        
         if (sorted != "Sort Successful") {
             System.out.println("you're dead to me");
         }
@@ -86,32 +86,64 @@ public class BetterQuicksort {
         int pivot, start, sorted, current, left, swap, index, right;
         pivot = start = sorted = current = left = swap = index = right = 0;
 
-        if (option == "median") {
-            medianOfThree(0, array.length / 2, array.length - 1, array);
-        }
         if (option == "lomuto") {
             left = pivot = swap = 0; pivot = 0;
             index = 1;
             right = array.length - 1;
-            quicksort2(left, pivot, swap, index, right, array, option);
+            quicksortLomuto(left, pivot, swap, index, right, array);
         }
         else {
             pivot = array.length -1;
             start = current = 0;
             sorted = array.length -2;
-            quicksort1(pivot, start, sorted, current, array, option);
+
+            if (option == "median") {
+                medianOfThree(0, array.length / 2, array.length - 1, array);
+                quicksortMedian(pivot, start, sorted, current, array);
+            } else if (option == "insertion") {
+                quicksortInsertion(pivot, start, sorted, current, array);
+            } else {
+                quicksortClassic(pivot, start, sorted, current, array);
+            }
         }
         
-    } // end quicksort
-        // quicksort helper
-        private void quicksort1(int pivot, int start, int sorted, int current, int[] array, String option) {
+    }
+        private void quicksortClassic(int pivot, int start, int sorted, int current, int[] array) {
 
-            if (option == "insertion" && pivot - start <= INSERTION_SIZE) {
+            while (current < sorted) {
+                if (array[sorted] <= array[pivot] && array[pivot] <= array[current]) {
+                    swap(current, sorted, array);
+                    current++;
+                    sorted--;
+                } else if (array[sorted] <= array[pivot] && array[current] <= array[pivot]) {
+                    current++;
+                } else if (array[pivot] <= array[sorted] && array[pivot] <= array[current]) {
+                    sorted--;
+                } else {
+                    current++;
+                    sorted--;
+                }
+            }
+            if (sorted < current || (sorted == current && array[pivot] < array[current])) {
+                swap(current, pivot, array);
+                current++;
+            } else if (array[pivot] >= array[current]) {
+                swap(current + 1, pivot, array);
+                current++;
+            } 
+            if (sorted > start) {
+                quicksortClassic(sorted, start, sorted - 1, start, array);
+            }
+            if (current < pivot) {
+                quicksortClassic(pivot, current, pivot - 1, current, array);
+            }
+        }
+    
+        private void quicksortInsertion(int pivot, int start, int sorted, int current, int[] array) {
+
+            if (pivot - start <= INSERTION_SIZE) {
                 insertionSort(start, pivot, array);
             } else {
-                if (option == "median") {
-                    medianOfThree(start, (start + pivot)/2, pivot, array);
-                }
                 while (current != sorted && current < sorted) {
                     if (array[sorted] <= array[pivot] && array[pivot] <= array[current]) {
                         swap(current, sorted, array);
@@ -134,15 +166,48 @@ public class BetterQuicksort {
                     current++;
                 } 
                 if (sorted > start) {
-                    quicksort1(sorted, start, sorted - 1, start, array, option);
+                    quicksortInsertion(sorted, start, sorted - 1, start, array);
                 }
                 if (current < pivot) {
-                    quicksort1(pivot, current, pivot - 1, current, array, option);
+                    quicksortInsertion(pivot, current, pivot - 1, current, array);
                 }
-        //     }
-        // } // end quicksort helper
+            }
+        }
 
-        private void quicksort2(int left, int pivot, int swap, int index, int right, int[] array, String option) {
+        private void quicksortMedian(int pivot, int start, int sorted, int current, int[] array) {
+
+            medianOfThree(start, (start + pivot)/2, pivot, array);
+            while (current != sorted && current < sorted) {
+                if (array[sorted] <= array[pivot] && array[pivot] <= array[current]) {
+                    swap(current, sorted, array);
+                    current++;
+                    sorted--;
+                } else if (array[sorted] <= array[pivot] && array[current] <= array[pivot]) {
+                    current++;
+                } else if (array[pivot] <= array[sorted] && array[pivot] <= array[current]) {
+                    sorted--;
+                } else {
+                    current++;
+                    sorted--;
+                }
+            }
+            if (sorted < current || (sorted == current && array[pivot] < array[current])) {
+                swap(current, pivot, array);
+                current++;
+            } else if (array[pivot] >= array[current]) {
+                swap(current + 1, pivot, array);
+                current++;
+            } 
+            if (sorted > start) {
+                quicksortMedian(sorted, start, sorted - 1, start, array);
+            }
+            if (current < pivot) {
+                quicksortMedian(pivot, current, pivot - 1, current, array);
+            }
+
+        }
+
+        private void quicksortLomuto(int left, int pivot, int swap, int index, int right, int[] array) {
 
             while (index <= right) {
                 if (array[pivot] <= array[index]) {
@@ -156,10 +221,10 @@ public class BetterQuicksort {
             swap(swap, pivot, array);
 
             if (swap > left) {
-                quicksort2(left, left, left, left + 1, swap - 1, array, option);
+                quicksortLomuto(left, left, left, left + 1, swap - 1, array);
             }
             if (swap + 1 < right) {
-                quicksort2(swap + 1, swap + 1, swap + 1, swap + 2, right, array, option);
+                quicksortLomuto(swap + 1, swap + 1, swap + 1, swap + 2, right, array);
             }
 
 
