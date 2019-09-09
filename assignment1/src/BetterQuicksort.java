@@ -11,11 +11,8 @@ public class BetterQuicksort {
     public static void main(String[] args) throws Exception {
         BetterQuicksort sorter = new BetterQuicksort();
 
-        sorter.multipleSorts("median");
+        sorter.multipleSorts("lomuto");
         
-        //sorter.sort("");
-
-
     }
 
     public void printArray(int[] array) {
@@ -38,7 +35,7 @@ public class BetterQuicksort {
         timeInMillis = System.currentTimeMillis();
         quicksort(array, option);
         elapsedTime = System.currentTimeMillis() - timeInMillis;
-        sorted = isSorted(array);        
+        System.out.println(sorted = isSorted(array));        
         if (sorted != "Sort Successful") {
             System.out.println("you're dead to me");
         }
@@ -86,20 +83,28 @@ public class BetterQuicksort {
 
     public void quicksort(int[] array, String option) {
         
+        int pivot, start, sorted, current, left, swap, index, right;
+        pivot = start = sorted = current = left = swap = index = right = 0;
+
         if (option == "median") {
             medianOfThree(0, array.length / 2, array.length - 1, array);
         }
-
-        int pivot = array.length - 1;
-        int start = 0,
-            sorted = array.length - 2,
-            current = 0;
-        
-        quicksort(pivot, start, sorted, current, array, option);
+        if (option == "lomuto") {
+            left = pivot = swap = 0; pivot = 0;
+            index = 1;
+            right = array.length - 1;
+            quicksort2(left, pivot, swap, index, right, array, option);
+        }
+        else {
+            pivot = array.length -1;
+            start = current = 0;
+            sorted = array.length -2;
+            quicksort1(pivot, start, sorted, current, array, option);
+        }
         
     } // end quicksort
         // quicksort helper
-        private void quicksort(int pivot, int start, int sorted, int current, int[] array, String option) {
+        private void quicksort1(int pivot, int start, int sorted, int current, int[] array, String option) {
 
             if (option == "insertion" && pivot - start <= INSERTION_SIZE) {
                 insertionSort(start, pivot, array);
@@ -129,12 +134,35 @@ public class BetterQuicksort {
                     current++;
                 } 
                 if (sorted > start) {
-                    quicksort(sorted, start, sorted - 1, start, array, option);
+                    quicksort1(sorted, start, sorted - 1, start, array, option);
                 }
                 if (current < pivot) {
-                    quicksort(pivot, current, pivot - 1, current, array, option);
+                    quicksort1(pivot, current, pivot - 1, current, array, option);
+                }
+        //     }
+        // } // end quicksort helper
+
+        private void quicksort2(int left, int pivot, int swap, int index, int right, int[] array, String option) {
+
+            while (index <= right) {
+                if (array[pivot] <= array[index]) {
+                    index++;
+                } else if (array[pivot] > array[index]) {
+                    swap++;
+                    swap(swap, index, array);
+                    index++;
                 }
             }
+            swap(swap, pivot, array);
+
+            if (swap > left) {
+                quicksort2(left, left, left, left + 1, swap - 1, array, option);
+            }
+            if (swap + 1 < right) {
+                quicksort2(swap + 1, swap + 1, swap + 1, swap + 2, right, array, option);
+            }
+
+
         } // end quicksort helper
     
         // adapted from https://rosettacode.org/wiki/Sorting_algorithms/Insertion_sort#Java
