@@ -2,16 +2,16 @@ import java.util.*;
 
 public class BetterQuicksort {
 
-    final int NUMBER_OF_ELEMENTS = 500000;
-    final int TIMES_TO_RUN = 500;
-    final int INSERTION_SIZE = 400;
+    final int NUMBER_OF_ELEMENTS = 1000000;
+    final int TIMES_TO_RUN = 300;
+    final int INSERTION_SIZE = 500;
     Random randomNumbers = new Random();
     int[] array = new int[NUMBER_OF_ELEMENTS];
 
     public static void main(String[] args) throws Exception {
         BetterQuicksort sorter = new BetterQuicksort();
 
-        sorter.multipleSorts("");
+        sorter.multipleSorts("lomuto");
         
     }
 
@@ -26,7 +26,6 @@ public class BetterQuicksort {
     public long sort(String option) {
         long timeInMillis;
         long elapsedTime;
-        String sorted;
 
         for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
             array[i] = randomNumbers.nextInt(NUMBER_OF_ELEMENTS);
@@ -35,8 +34,8 @@ public class BetterQuicksort {
         timeInMillis = System.currentTimeMillis();
         quicksort(array, option);
         elapsedTime = System.currentTimeMillis() - timeInMillis;
-        sorted = isSorted(array);        
-        if (sorted != "Sort Successful") {
+        isSorted(array);        
+        if (!isSorted(array)) {
             System.out.println("you're dead to me");
         }
         return elapsedTime;
@@ -69,12 +68,12 @@ public class BetterQuicksort {
         }
     }
 
-    public String isSorted(int[] arrayToCheck) {
-        String sorted = "Sort Successful";
+    public Boolean isSorted(int[] arrayToCheck) {
+        Boolean sorted = true;
         int i = 0;
-            while (sorted == "Sort Successful" && i < arrayToCheck.length - 1) {
+            while (true && i < arrayToCheck.length - 1) {
                 if (arrayToCheck[ i ] > arrayToCheck[ i + 1 ]) {
-                    sorted = "Sort failed";
+                    sorted = false;
                 }
                 i++;
             }
@@ -103,12 +102,12 @@ public class BetterQuicksort {
             } else if (option == "insertion") {
                 quicksortInsertion(pivot, start, sorted, current, array);
             } else {
-                quicksortClassic(pivot, start, sorted, current, array);
+                quicksortHoare(pivot, start, sorted, current, array);
             }
         }
         
     }
-        private void quicksortClassic(int pivot, int start, int sorted, int current, int[] array) {
+        private void quicksortHoare(int pivot, int start, int sorted, int current, int[] array) {
 
             while (current < sorted) {
                 if (array[sorted] <= array[pivot] && array[pivot] <= array[current]) {
@@ -132,10 +131,10 @@ public class BetterQuicksort {
                 current++;
             } 
             if (sorted > start) {
-                quicksortClassic(sorted, start, sorted - 1, start, array);
+                quicksortHoare(sorted, start, sorted - 1, start, array);
             }
             if (current < pivot) {
-                quicksortClassic(pivot, current, pivot - 1, current, array);
+                quicksortHoare(pivot, current, pivot - 1, current, array);
             }
         }
     
