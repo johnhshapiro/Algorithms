@@ -2,9 +2,9 @@ import java.util.*;
 
 public class BetterQuicksort {
 
-    final int NUMBER_OF_ELEMENTS = 1000000;
-    final int TIMES_TO_RUN = 300;
-    final int INSERTION_SIZE = 500;
+    final int NUMBER_OF_ELEMENTS = 500000;
+    final int TIMES_TO_RUN = 100;
+    final int INSERTION_SIZE = 20;
     Random randomNumbers = new Random();
     int[] array = new int[NUMBER_OF_ELEMENTS];
 
@@ -101,6 +101,7 @@ public class BetterQuicksort {
                 quicksortMedian(pivot, start, sorted, current, array);
             } else if (option == "insertion") {
                 quicksortInsertion(pivot, start, sorted, current, array);
+                insertionSort(start, pivot, array);
             } else {
                 quicksortHoare(pivot, start, sorted, current, array);
             }
@@ -141,7 +142,7 @@ public class BetterQuicksort {
         private void quicksortInsertion(int pivot, int start, int sorted, int current, int[] array) {
 
             if (pivot - start <= INSERTION_SIZE) {
-                insertionSort(start, pivot, array);
+                // Let it be, let it be, let it be, let it be. Whisper words of wisdom. Let it be.
             } else {
                 while (current != sorted && current < sorted) {
                     if (array[sorted] <= array[pivot] && array[pivot] <= array[current]) {
