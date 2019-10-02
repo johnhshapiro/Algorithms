@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - GFG",
+            "request": "launch",
+            "mainClass": "GFG",
+            "projectName": "assignment1"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - BetterQuicksort",
             "request": "launch",
             "mainClass": "BetterQuicksort",
