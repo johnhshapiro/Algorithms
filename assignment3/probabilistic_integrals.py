@@ -85,6 +85,7 @@ def mean_values_integral(number_of_points, xmin, xmax):
     """
     x_range = xmax - xmin
     total = 0
+    # keep a running total of the random y's calculated from x
     for point in range(number_of_points):
         x = x_range * random.random() + xmin
         total += f(x)
@@ -95,11 +96,13 @@ def mean_values_integral(number_of_points, xmin, xmax):
 
 def trapezoidal_rule_approximation(number_of_zoids, xmin, xmax):
     x_range = xmax - xmin
+    # all trapezoids will be this wide
     zoid_width = float(x_range) / number_of_zoids
     a = xmin
     b = a + zoid_width
     total_area = 0
     approx_integral = 0
+    # keep a running total of trapezoid area
     for zoid in range(number_of_zoids):
         approx_integral += zoid_width * (f(a) + f(b)) / 2
         a = b
@@ -108,6 +111,6 @@ def trapezoidal_rule_approximation(number_of_zoids, xmin, xmax):
 
 DATA_POINTS = 100000
 
-# monte_carlo_dart_integral(DATA_POINTS, -math.pi/2, math.pi/2)
-# mean_values_integral(DATA_POINTS, -math.pi/2, math.pi/2)
+monte_carlo_dart_integral(DATA_POINTS, -math.pi/2, math.pi/2)
+mean_values_integral(DATA_POINTS, -math.pi/2, math.pi/2)
 trapezoidal_rule_approximation(DATA_POINTS, -math.pi/2, math.pi/2)
