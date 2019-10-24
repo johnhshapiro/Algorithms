@@ -6,7 +6,8 @@ def f(x, fn):
     lookup = {"sin"  : math.sin(x),
               "cos"  : math.cos(x),
               "poly" : 3 * x ** 3 + x ** 2 + 5 * x + 3,
-              "e"    : math.e ** x}
+              "e"    : math.e ** x,
+              "thing": (math.e ** -x)/(1 + (x - 1) ** 2)}
     return lookup.get(fn)
 
 def find_ymax_and_min(xmin, xmax, fn):
@@ -127,22 +128,21 @@ def run_tests():
     total_time = 0
     total_integral = 0
     trap_time, trap_integral = 0, 0
-    data, xmin, xmax, type = data_points, 0, math.pi/2, "sin"
     for list in argument_lists:    
         trap_integral, trap_time = zoidal_rule_approximation(list[0], list[1], list[2], list[3])    
         for i in range(10):
             integral, time = monte_carlo_approximation(list[0], list[1], list[2], list[3])
             total_integral += integral
             total_time += time
-        print(total_time/10)
-        print(total_integral/10)
+        integral = total_integral/10
+        time = total_time/10
 
 data_points = 10000
 
-# monte_carlo_approximation(data_points, 0, math.pi/2, "sin")
+print(monte_carlo_approximation(data_points, 0, 5, "thing"))
 # monte_carlo_approximation(data_points, 0, math.pi/2, "cos")
 # monte_carlo_approximation(data_points, -2, 2, "poly")
 # monte_carlo_approximation(data_points, 1, 2, "e")
 # mean_values_approximation(data_points, 0, math.pi/2, "sin")
 # zoidal_rule_approximation(data_points, 0, math.pi/2, "sin")
-run_tests()
+# run_tests()
