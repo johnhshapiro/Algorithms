@@ -19,7 +19,6 @@ def one_hundred_probabalistic_searches(array, guesses):
         total_comparisons += comparisons
         if not target_found:
             not_found_count += 1
-        print(f"Found? {target_found} \n comparisons: {comparisons}")
 
     average_number_of_comparisons = total_comparisons / 10000
     print(f"Average number of comparisons to find value: {average_number_of_comparisons}\n" +
