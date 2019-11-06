@@ -7,7 +7,7 @@ def f(x, fn):
               "cos"  : math.cos(x),
               "poly" : 3 * x ** 3 + x ** 2 + 5 * x + 3,
               "e"    : math.e ** x,
-              "thing": (math.e ** -x)/(1 + (x - 1) ** 2)}
+              "luke": (math.e ** -x)/(1 + (x - 1) ** 2)}
     return lookup.get(fn)
 
 def find_ymax_and_min(xmin, xmax, fn):
@@ -49,11 +49,11 @@ def monte_carlo_approximation(number_of_darts, xmin, xmax, fn):
         xmin {float} -- lower bound of x
         xmax {float} -- upper bound of x
     """
+    # get the y max and min based on x max and y
+    ymin, ymax = find_ymax_and_min(xmin, xmax, fn)
     start = time.time()
     darts_under_function = 0
     x_range = xmax - xmin
-    # get the y max and min based on x max and y
-    ymin, ymax = find_ymax_and_min(xmin, xmax, fn)
     y_range = ymax - ymin
     area_of_box = x_range * y_range
     # Let's throw some darts!
@@ -121,28 +121,51 @@ def zoidal_rule_approximation(number_of_zoids, xmin, xmax, fn):
     return approx_integral, elapsed
 
 def run_tests():
-    argument_lists = [[data_points, 0, math.pi/2, "sin"],
-                      [data_points, 0, math.pi/2, "cos"],
-                      [data_points, -2, 2, "poly"],
-                      [data_points, 1, 2, "e"]]
-    total_time = 0
-    total_integral = 0
-    trap_time, trap_integral = 0, 0
-    for list in argument_lists:    
-        trap_integral, trap_time = zoidal_rule_approximation(list[0], list[1], list[2], list[3])    
-        for i in range(10):
-            integral, time = monte_carlo_approximation(list[0], list[1], list[2], list[3])
-            total_integral += integral
-            total_time += time
-        integral = total_integral/10
-        time = total_time/10
+    argument_lists = [[0, math.pi/2, "sin"],
+                      [0, math.pi/2, "cos"],
+                      [-2, 2, "poly"],
+                      [1, 2, "e"],
+                      [0, 5, "luke"]]
+    data_points = 100
+    while data_points <= 100000:
+        for list in argument_lists:
+            trap_time = trap_integral = 0
+            total_time = total_integral = time_off = integral_off = 0
+            # Calculate trapezoidal
+            for i in range(10):
+                integral, time = zoidal_rule_approximation(data_points, list[0], list[1], list[2])
+                trap_integral += integral
+                trap_time += time
+            # Run monte carlo ten times
+            for i in range(10):
+                integral, time = monte_carlo_approximation(data_points, list[0], list[1], list[2])
+                total_integral += integral
+                total_time += time
+            integral_off = "{:.4%}".format(abs(total_integral - trap_integral)/trap_integral)
+            time_off = "{:.1%}".format((total_time - trap_time)/trap_time)
+            print(f"Monte Carlo\n" +
+                f"{data_points}\n" +
+                f"{list[2]}\n" +
+                f"{time_off}\n" +
+                f"{integral_off}")
+            total_time = total_integral = time_off = integral_off = 0
+            # Run mean_values ten times
+            for i in range(10):
+                integral, time = mean_values_approximation(data_points, list[0], list[1], list[2])
+                total_integral += integral
+                total_time += time
+            integral_off = "{:.4%}".format(abs(total_integral - trap_integral)/trap_integral)
+            time_off = "{:.1%}".format((total_time - trap_time)/trap_time)
+            print(f"Mean Values\n" +
+                f"{data_points}\n" +
+                f"{list[2]}\n" +
+                f"{time_off}\n" +
+                f"{integral_off}")
+        data_points *= 10
 
-data_points = 10000
 
-print(monte_carlo_approximation(data_points, 0, 5, "thing"))
-# monte_carlo_approximation(data_points, 0, math.pi/2, "cos")
-# monte_carlo_approximation(data_points, -2, 2, "poly")
-# monte_carlo_approximation(data_points, 1, 2, "e")
-# mean_values_approximation(data_points, 0, math.pi/2, "sin")
-# zoidal_rule_approximation(data_points, 0, math.pi/2, "sin")
-# run_tests()
+# points = 10000
+# print(monte_carlo_approximation(points, 0, math.pi/2, "sin"))
+# print(mean_values_approximation(points, 0, math.pi/2, "sin"))
+# print(zoidal_rule_approximation(points, 0, math.pi/2, "sin"))
+run_tests()

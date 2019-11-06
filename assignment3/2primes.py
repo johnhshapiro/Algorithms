@@ -19,12 +19,12 @@ def generate_test_values():
         test_values.append(3 * random.randrange(100000, 1000000))
     # generate numbers constructed of by product of two positive ints
     for i in range(10):
-        test_values.append(random.randrange(1000, 10000) * random.randrange(1000, 10000))
+        test_values.append(random.randrange(1000, 2000) * random.randrange(1000, 2000))
     # generate numbers we know to be not prime with various divisors
-    for i in range(60):
-        x = random.randrange(1000000, 1100000)
-        k = random.randrange(2, 100)
-        test_values.append(x - x % k)
+    for i in range(10):
+        x = random.randrange(10000, 100000)
+        k = random.randrange(50, 100)
+        test_values.append(x * k)
 
     return test_values
 
@@ -71,12 +71,27 @@ def run_tests(test_values):
     number_of_guesses = 10
     while number_of_guesses <= 10000:
         total_correct = 0
-        for i in range(100):
+        for i in range(1000):
             for test_value in test_values:
-                if check_prime_probablistically(test_value, number_of_guesses) == check_prime(test_value):
+                if  not check_prime_probablistically(test_value, number_of_guesses):
                     total_correct += 1
-        print("{:.4f}".format(total_correct/10000))
+        print("{:.1%}".format(total_correct/10000))
         number_of_guesses *= 10
     
 test_values = generate_test_values()
-run_tests(test_values)
+evens = test_values[0:10]
+fives = test_values[10:20]
+threes = test_values[20:30]
+pos_ints = test_values[30:40]
+various = test_values[40:50]
+
+print("Multiples of 2")
+run_tests(evens)
+print("Multiples of 3")
+run_tests(threes)
+print("Multiples of 5")
+run_tests(fives)
+print("Large Composites")
+run_tests(pos_ints)
+print("Various divisors")
+run_tests(various)
