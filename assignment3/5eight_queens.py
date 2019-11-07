@@ -1,13 +1,25 @@
 """Adapted from https://github.com/sol-prog/N-Queens-Puzzle
 """
-
+import random
 solutions = 0
 
 def solve(start_row):
     """Solve the n queens puzzle and print the number of solutions"""
     global solutions
-    positions = [-1] * 8
-    put_queen(positions, start_row)
+    # Place k queens, 1 in each row
+    positions = random.sample(range(8), start_row)
+    positions.extend([-1] * (8 - start_row))
+    show_full_board(positions)
+    glued_queens_legal = True
+    current_row = 0
+    for row in range(start_row):
+        # Reject all invalid positions
+        if not check_place(positions, current_row, positions[row]):
+            glued_queens_legal = False
+            break
+        current_row = current_row + 1
+    if glued_queens_legal:
+        put_queen(positions, start_row)
     print(solutions)
 
 def put_queen(positions, target_row):
@@ -24,7 +36,7 @@ def put_queen(positions, target_row):
         solutions += 1
     else:
         # For all N columns positions try to place a queen
-        for column in range(0, 8):
+        for column in range(8):
             # Reject all invalid positions
             if check_place(positions, target_row, column):
                 positions[target_row] = column
@@ -66,8 +78,4 @@ def show_short_board(positions):
         line += str(positions[i]) + " "
     print(line)
 
-def tests():
-    """Generate test boards
-    """
-
-solve()
+solve(3)
