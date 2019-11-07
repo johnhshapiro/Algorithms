@@ -1,3 +1,6 @@
+"""Calculate pi probabilistically, and report the result for varying numbers of darts
+"""
+
 import random
 import math
 

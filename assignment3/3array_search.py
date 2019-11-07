@@ -1,3 +1,8 @@
+"""Generate an array of 1000 random elements. Give 5000 random checks to find an item known to be in the array.
+If the item is found, record the number of guesses.
+Repeat the process 10000 times.
+"""
+
 import random
 
 def probabalistic_search(array, guesses):

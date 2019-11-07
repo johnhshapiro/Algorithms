@@ -1,3 +1,7 @@
+"""Generate numbers that are guaranteed not to be prime, check if they are prime probabilistically, and report the accuracy
+based on various numbers of values allowed to be check.
+"""
+
 import random
 
 def generate_test_values():
