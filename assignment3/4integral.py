@@ -1,4 +1,6 @@
-"""Calculate integrals with 3 approaches:
+"""John Shapiro
+4. Monte Carlo Integration
+Calculate integrals with 3 approaches:
     Monte Carlo, Mean Value, Trapezoidal integration.
     Trapezoidal integration is usede as the baseline because it yields the same results every time, and gets more accurate as steps are added.
 Results of Monte Carlo and Mean Value are compared to the baseline to guage accuracy and run time of probabilistic methods for integral calculation.

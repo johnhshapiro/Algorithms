@@ -1,4 +1,6 @@
-"""Generate numbers that are guaranteed not to be prime, check if they are prime probabilistically, and report the accuracy
+"""John Shapiro
+2. Primes
+Generate numbers that are guaranteed not to be prime, check if they are prime probabilistically, and report the accuracy
 based on various numbers of values allowed to be check.
 """
 

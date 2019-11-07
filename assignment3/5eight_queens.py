@@ -1,4 +1,6 @@
-"""Adapted from https://github.com/sol-prog/N-Queens-Puzzle
+"""John Shapiro
+5. Eight Queens
+Adapted from https://github.com/sol-prog/N-Queens-Puzzle
 
 Finds all 92 solutions of the 8 queens problem using back tracking.
 Times how long it takes to find all 92 solutions when using random starting positions for various numbers of k < 9 queens.

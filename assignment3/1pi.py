@@ -1,4 +1,6 @@
-"""Calculate pi probabilistically, and report the result for varying numbers of darts
+"""John Shapiro
+1. Pi
+Calculate pi probabilistically, and report the result for varying numbers of darts
 """
 
 import random
