@@ -1,26 +1,28 @@
 """Adapted from https://github.com/sol-prog/N-Queens-Puzzle
 """
 import random
+import time
 solutions = 0
 
 def solve(start_row):
     """Solve the n queens puzzle and print the number of solutions"""
     global solutions
-    # Place k queens, 1 in each row
-    positions = random.sample(range(8), start_row)
-    positions.extend([-1] * (8 - start_row))
-    show_full_board(positions)
-    glued_queens_legal = True
-    current_row = 0
-    for row in range(start_row):
-        # Reject all invalid positions
-        if not check_place(positions, current_row, positions[row]):
-            glued_queens_legal = False
-            break
-        current_row = current_row + 1
-    if glued_queens_legal:
-        put_queen(positions, start_row)
-    print(solutions)
+    positions = legal_starting_k_queens(start_row)
+    put_queen(positions, start_row)
+    print("found", solutions, "solutions")
+
+def legal_starting_k_queens(start_row):
+    while True:
+        # place k queens
+        positions = random.sample(range(8), start_row)
+        positions.extend([-1] * (8 - start_row))
+        show_full_board(positions)
+        current_row = 0
+        for row in range(start_row):
+            if check_place(positions, current_row, positions[row]):
+                current_row = current_row + 1
+        if current_row == start_row:
+            return positions
 
 def put_queen(positions, target_row):
     """
@@ -31,8 +33,8 @@ def put_queen(positions, target_row):
     global solutions
     # Base (stop) case - all N rows are occupied
     if target_row == 8:
-        show_full_board(positions)
-        # show_short_board(positions)
+        # show_full_board(positions)
+        show_short_board(positions)
         solutions += 1
     else:
         # For all N columns positions try to place a queen
@@ -78,4 +80,13 @@ def show_short_board(positions):
         line += str(positions[i]) + " "
     print(line)
 
-solve(3)
+
+start = time.time()
+solve(0)
+elapsed = time.time() - start
+print(elapsed)
+solutions = 0
+start = time.time()
+solve(4)
+elapsed = time.time() - start
+print(elapsed)
