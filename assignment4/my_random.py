@@ -12,6 +12,7 @@ import time
 import math
 import random
 import os
+import numpy
 
 class RandomGenerator():
     """Generates a sequence of 'random' numbers in the range 1 to 10. This class utilizes a purely hardcware solution, relying completely on 
@@ -88,4 +89,10 @@ def run_tests():
     print(py_total_sequences, my_total_sequences)  
 
 if __name__ == '__main__':
-    run_tests()
+    # run_tests()
+    output = open('data.csv', 'w')
+    randoms = []
+    generator = RandomGenerator()
+    for i in range(1000):
+        randoms.append(generator.generate_random())
+    numpy.histogram(randoms)
